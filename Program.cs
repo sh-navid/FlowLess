@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using NoFlowEngine.Middlewares;
 using NoFlowEngine.Extensions;
 using NoFlowEngine.Exceptions;
@@ -19,16 +20,32 @@ builder.Services.ConfigureServices();
 
 builder.Services.AddHttpContextAccessor();
 
+// Swagger configuration
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "NoFlowEngine API", Version = "v1" });
+});
+
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    app.UseDeveloperExceptionPage();
+
+    // Enable middleware to serve generated Swagger as a JSON endpoint.
+    app.UseSwagger();
+
+    // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+    // specifying the Swagger JSON endpoint.
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "NoFlowEngine API V1");
+    });
 }
 else
 {
-    app.UseDeveloperExceptionPage();
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 
 DatabaseInitializer.InitializeDatabase(app);
