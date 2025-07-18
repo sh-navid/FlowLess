@@ -1,6 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using NoFlowEngine.Models;
 using NoFlowEngine.Data;
-using System.Linq;
 
 namespace NoFlowEngine.Repositories
 {
@@ -26,19 +27,19 @@ namespace NoFlowEngine.Repositories
         /// </summary>
         /// <param name="username">The username to search for.</param>
         /// <returns>The User object if found; otherwise, null.</returns>
-        public User? GetUserByUsername(string username)
+        public async Task<User?> GetUserByUsername(string username)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.Username == username);
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
 
         /// <summary>
         /// Adds a new user to the database.
         /// </summary>
         /// <param name="user">The User object to add.</param>
-        public void AddUser(User user)
+        public async Task AddUser(User user)
         {
             _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 
@@ -52,12 +53,12 @@ namespace NoFlowEngine.Repositories
         /// </summary>
         /// <param name="username">The username to search for.</param>
         /// <returns>The User object if found; otherwise, null.</returns>
-        User? GetUserByUsername(string username);
+        Task<User?> GetUserByUsername(string username);
 
         /// <summary>
         /// Adds a new user.
         /// </summary>
         /// <param name="user">The User object to add.</param>
-        void AddUser(User user);
+        Task AddUser(User user);
     }
 }
