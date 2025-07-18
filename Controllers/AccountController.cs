@@ -1,7 +1,6 @@
 using NoFlowEngine.Services.Authentication;
 using NoFlowEngine.Models.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace NoFlowEngine.Controllers
 {
@@ -48,7 +47,7 @@ namespace NoFlowEngine.Controllers
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, error);
                 }
             }
             return View(model);
