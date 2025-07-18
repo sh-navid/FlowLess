@@ -1,4 +1,5 @@
 *.n8x.*
 *n8x*
+*.db*
 obj
 bin
